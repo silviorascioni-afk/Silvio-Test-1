@@ -9,29 +9,36 @@ import {
   type Node,
   type NodeChange,
   type NodeProps,
-  type NodeTypes
+  type NodeTypes,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 
-import type {
-  LayoutNodeData
-} from "../types";
+import type { LayoutNodeData } from "../types";
 
-type TreatmentNode = Node<
+type TreatmentFlowNode = Node<
   LayoutNodeData,
   "treatment"
 >;
 
-function TreatmentNodeComponent({
-  data
-}: NodeProps<TreatmentNode>) {
+const color: Record<string, string> = {
+  source: "#2563eb",
+  sediment: "#64748b",
+  cartridge: "#0891b2",
+  roc: "#7c3aed",
+  tank: "#d97706",
+  remineralizer: "#0d9488",
+  appliance: "#94a3b8",
+};
 
+function TreatmentNodeComponent({
+  data,
+}: NodeProps<TreatmentFlowNode>) {
   return (
     <div
       className="flowNode"
       style={{
-        borderColor: color[data.kind]
+        borderColor: color[data.kind] ?? "#64748b",
       }}
     >
       <Handle
@@ -54,59 +61,46 @@ function TreatmentNodeComponent({
 }
 
 const nodeTypes: NodeTypes = {
-  treatment: TreatmentNodeComponent
+  treatment: TreatmentNodeComponent,
 };
 
 interface LayoutCanvasProps {
-  nodes: TreatmentNode[];
-
+  nodes: TreatmentFlowNode[];
   edges: Edge[];
 
   onNodesChange: (
-    changes: NodeChange<TreatmentNode>[]
+    changes: NodeChange<TreatmentFlowNode>[]
   ) => void;
 }
 
 export function LayoutCanvas({
   nodes,
   edges,
-  onNodesChange
+  onNodesChange,
 }: LayoutCanvasProps) {
-
   return (
     <main className="panel canvas">
-
       <header>
         <b>Installation layout</b>
         <span>Drag components freely</span>
       </header>
 
       <div className="flow">
-
-        <ReactFlow<TreatmentNode, Edge>
+        <ReactFlow<TreatmentFlowNode, Edge>
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{
-            padding: 0.2
+            padding: 0.2,
           }}
         >
-
           <Background gap={20} />
-
           <Controls />
-
-          <MiniMap
-            pannable
-            zoomable
-          />
-
+          <MiniMap pannable zoomable />
         </ReactFlow>
-
       </div>
-
     </main>
   );
 }
