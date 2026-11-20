@@ -10,7 +10,9 @@ export interface Recommendation { application:ApplianceInput; family:CartridgeFa
 export interface RocSettings { model:RocModel; tankSize:TankSize }
 export interface LayoutConfig { scenario:Scenario; site:SiteInput; sedimentEnabled:boolean; roc:RocSettings }
 export type LayoutNodeKind="source"|"sediment"|"cartridge"|"roc"|"tank"|"remineralizer"|"appliance";
-export interface LayoutNodeData extends Record<string, unknown> {
+export interface LayoutNodeData
+  extends Record<string, unknown> {
+
   label: string;
   subtitle: string;
   kind: LayoutNodeKind;
